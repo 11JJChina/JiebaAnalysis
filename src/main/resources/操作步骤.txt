@@ -1,0 +1,13 @@
+1、创建hive表：
+create table news(sentence string);
+2、将数据导入到hive中：
+load data local inpath '/home/data-test/allfiles.txt' into table news;
+3、将hive中的数据重新格式化
+create table new_no_seg as
+  select
+    split(regexp_replace(sentence,' ',''),'##@@##')[0] as content,
+    split(regexp_replace(sentence,' ',''),'##@@##')[1] as label
+  from news;
+4、将spark的jieba分词代码打包，复制到集群中
+5、运行run.sh脚本（这里是用的CDH搭建的集群，这个脚本需要根据自己的环境情而定）
+6、在spark,yarn上观察运行结果  
